@@ -20,9 +20,16 @@ const loadShopping=async (req,res)=>{
     }
 }
 
+const loadlogin=async (req,res)=>{
+    try {
+        return res.render('login');
 
+    } catch (error) {
+        console.log('login  PAGE IS NOT LOADING:',error);
+        res.status(500).send('Server Error');
 
-
+    }
+}        
 
 
 
@@ -39,4 +46,4 @@ const loadHomepage =async(req,res)=>{
     }
 }
 
-module.exports ={loadHomepage,loadSignup,loadShopping};
+module.exports ={loadHomepage,loadSignup,loadShopping,loadlogin};

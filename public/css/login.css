@@ -3,20 +3,20 @@
 body, html {
   margin: 0;
   padding: 0;
-  background-color: #00ddff;
+  background-color: #222;
   font-family: 'Roboto', Helvetica, sans-serif;
   color: #888;
   height: 100%;
 }
 
-.signup {
+.login {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
 }
 
-.signup__container {
+.login__container {
   display: flex;
   background-color: #fff;
   box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.3);
@@ -24,17 +24,17 @@ body, html {
   width: 100%;
 }
 
-.signup__image {
+.login__image {
   flex: 1;
 }
 
-.signup__image img {
+.login__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.signup__form {
+.login__form {
   flex: 1;
   padding: 40px;
   display: flex;
@@ -42,7 +42,7 @@ body, html {
   justify-content: center;
 }
 
-.signup__title {
+.login__title {
   font-size: 1.5em;
   margin-bottom: 20px;
   color: #2a363b;
