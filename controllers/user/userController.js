@@ -1,3 +1,31 @@
+const loadSignup =async (req,res)=>{
+    try {
+        return res.render('signup');
+
+    } catch (error) {
+        console.log('HOME IS NOT LOADING:',error);
+        res.status(500).send('Server Error');
+        
+    }
+}
+
+const loadShopping=async (req,res)=>{
+    try {
+        return res.render('shop');
+
+    } catch (error) {
+        console.log('SHOPPING PAGE IS NOT LOADING:',error);
+        res.status(500).send('Server Error');
+        
+    }
+}
+
+
+
+
+
+
+
 const loadHomepage =async(req,res)=>{
     try {
 
@@ -11,4 +39,4 @@ const loadHomepage =async(req,res)=>{
     }
 }
 
-module.exports ={loadHomepage}
+module.exports ={loadHomepage,loadSignup,loadShopping};
