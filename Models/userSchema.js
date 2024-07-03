@@ -43,7 +43,7 @@ const userSchema =new Schema({
     }],
     wallet:{
         type:Schema.Types.ObjectId,
-        default:0
+        
     },
     wishlist:[{
 
@@ -61,11 +61,11 @@ const userSchema =new Schema({
     },
     referalCode:{
         type:String,
-        required:true
+        
     },
     redeemed:{
         type:Boolean,
-        default:false
+        
     },
     redeemedUsers:[{
         type:Schema.Types.ObjectId,
