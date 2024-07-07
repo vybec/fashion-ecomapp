@@ -83,3 +83,8 @@ input {
 .submit__btn:hover {
   background-color: #E84A5F;
 }
+.error-message{
+  color: red;
+  font-size: 0.75rem;
+  display: none;
+}
