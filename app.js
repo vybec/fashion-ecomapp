@@ -2,14 +2,31 @@ require('dotenv').config(); // Load environment variables from .env file
 console.log('MONGODB_URI from env:', process.env.MONGODB_URI);
 const express = require('express');
 const path = require('path');
-const app = express();
+const session = require('express-session');
+const connectDB = require('./config/db'); // Ensure this path is correct based on your project structure
 const userRouter = require('./routes/userRouter.js');
-require('./config/db.js'); // Ensure this path is correct based on your project structure
 
+const app = express();
+
+// Connect to MongoDB
+connectDB();
+
+// Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//To control cache
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'defaultSecretKey',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 72 * 60 * 1000
+    }
+}));
+
+// To control cache
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
