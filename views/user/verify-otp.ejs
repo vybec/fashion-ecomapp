@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Code</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #cfd9df, #e2ebf0);
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .container img {
+            width: 50px;
+            margin-bottom: 1em;
+        }
+        .container h2 {
+            margin: 0 0 1em;
+        }
+        .container p {
+            margin: 0 0 1em;
+            color: gray;
+        }
+        .code-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+        .code-inputs input {
+            width: 3em;
+            height: 3em;
+            text-align: center;
+            font-size: 1.5em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .verify-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 1em 2em;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .verify-button:disabled {
+            background-color: #ccc;
+        }
+        .resend {
+            margin-top: 1em;
+            color: gray;
+        }
+        .resend a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .resend a:hover {
+            text-decoration: underline;
+        }
+        .timer {
+            margin-top: 1em;
+            color: gray;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<form id="otpForm" onsubmit="return validateOtpForm()">
+    <div class="container">
+        <img src="https://img.icons8.com/fluency/48/000000/checked.png" alt="Verify Icon"/>
+        <h2>Verify your code</h2>
+        <p>We have sent a code to your email <strong><%= email %></strong></p>
+        <div class="code-inputs">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+        </div>
+        <button type="submit" class="verify-button" disabled>Verify</button>
+        <div class="timer">
+            Time left: <span id="timer">01:00</span>
+        </div>
+        <div class="resend">
+            Didn't receive code? <a href="#" id="resendLink" style="pointer-events: none; color: grey;">Resend</a>
+        </div>
+    </div>
+</form>
+<script>
+    const inputs = document.querySelectorAll('.code-inputs input');
+    const verifyButton = document.querySelector('.verify-button');
+    const timerDisplay = document.getElementById('timer');
+    const resendLink = document.getElementById('resendLink');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            checkInputs();
+        });
+    });
+
+    function checkInputs() {
+        const allFilled = Array.from(inputs).every(input => input.value.length === 1);
+        verifyButton.disabled = !allFilled;
+    }
+
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        const interval = setInterval(() => {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                resendLink.style.pointerEvents = "auto";
+                resendLink.style.color = "#007bff";
+            }
+        }, 1000);
+    }
+
+    window.onload = () => {
+        const oneMinute = 60 * 1;
+        startTimer(oneMinute, timerDisplay);
+    };
+
+    function validateOtpForm() {
+        const otp = Array.from(inputs).map(input => input.value).join('');
+
+        fetch('/verify-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'OTP VERIFIED',
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    window.location.href = data.redirectUrl;
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: data.message,
+                });
+            }
+        })
+        .catch(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid OTP',
+                text: 'Please try again'
+            });
+        });
+
+        return false;
+    }
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const connectDB = require('./config/db'); // Ensure this path is correct based on your project structure
-const userRouter = require('./routes/userRouter.js');
+const userRouter = require('./routes/userRouter');
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'defaultSecretKey',
+    secret: process.env.SESSION_SECRET || 'mySecretkey',
     resave: false,
     saveUninitialized: true,
     cookie: {
