@@ -143,5 +143,34 @@ const verifyOtp = async (req, res) => {
     }
 };
 
+const resend = async(req,res)=>{
+    try {
 
-module.exports = { loadHomepage, loadSignup, loadShopping, loadLogin, signup, verifyOtp };
+        const {email}=req.session.userData;
+        if(!email){
+            return res.status(400).json({success:false,message:'email not found'})
+
+        }
+        const otp = generateOtp();
+        req.session.userOtp =otp;
+
+        const emailSent =await sendVerificationEmail(email.otp);
+
+        if(emailSent){
+            console.log('Resend OTP ',otp);
+            res.status(200).json({success:true,message:'otp resend sucessfuly'})
+        }else{
+            res.status(500).json({success:false,message:'Failed to resend otp'})
+
+        }
+        
+    } catch (error) {
+
+        console.error('Error resending otp',error);
+        res.status(500).json({success:false,message:'Internal Server error'})
+        
+    }
+}
+
+
+module.exports = { loadHomepage, loadSignup, loadShopping, loadLogin, signup, verifyOtp,resend }

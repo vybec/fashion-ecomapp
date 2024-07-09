@@ -10,5 +10,6 @@ router.get('/shop',userController.loadShopping);
 router.get('/login',userController.loadLogin);
 router.post('/signup',userController.signup);
 router.post('/verify-otp',userController.verifyOtp);
+router.post('/resend-link',userController.resend);
 
 module.exports =router;

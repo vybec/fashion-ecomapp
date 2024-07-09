@@ -94,7 +94,7 @@
             Time left: <span id="timer">01:00</span>
         </div>
         <div class="resend">
-            Didn't receive code? <a href="#" id="resendLink" style="pointer-events: none; color: grey;">Resend</a>
+            Didn't receive code? <a href="resend" id="resendLink" style="pointer-events:none; color: grey;">Resend</a>
         </div>
     </div>
 </form>
@@ -179,6 +179,41 @@
             });
         });
 
+        return false;
+    }
+
+    function resend(){
+        clearInterval(timerInterval);
+        time=60;
+        document.getElementById('otp').disabled=false;
+        document.getElementById('timervalue').classList.remove('expired');
+        startTimer();
+        $.ajax({
+            type:'POST',
+            url:'resend-Link',
+            success:function (response){
+
+                if(response.success){
+                    Swal.fire({
+                    icon:'success',
+                    title:'OTP Resend sucessfully',
+                    showConfirmButton:false,
+                    timer:1500,
+
+
+                })
+                }else{
+                    Swal.fire({
+                        icon:'error',
+                        title:'Error',
+                        text:'An error occured',
+
+                    })
+                }
+                
+            }
+
+        })
         return false;
     }
 </script>
