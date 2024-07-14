@@ -3,6 +3,7 @@ console.log('MONGODB_URI from env:', process.env.MONGODB_URI);
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const passport = require('./config/passport'); // Ensure the typo is fixed in this file
 const connectDB = require('./config/db'); // Ensure this path is correct based on your project structure
 const userRouter = require('./routes/userRouter');
 
@@ -25,6 +26,9 @@ app.use(session({
         maxAge: 72 * 60 * 1000
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // To control cache
 app.use((req, res, next) => {
