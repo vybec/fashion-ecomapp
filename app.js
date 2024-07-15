@@ -36,6 +36,13 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    res.status(404).render('404');
+});
+
+
+
+
 // Set up the view engine
 app.set('view engine', 'ejs');
 
