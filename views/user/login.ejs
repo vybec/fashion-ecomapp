@@ -14,8 +14,8 @@
       </div>
       <div class="login__form">
         <h2 class="login__title">Login</h2>
-        <% if (locals.message) { %>
-          <div class="alert alert-danger text-center"><%= message %></div>
+        <% if (message) { %>
+          <div class="alert alert-danger text-center" style="color: red;"><%= message %></div>
         <% } %>
         <form action="/login" method="post">
           <label>

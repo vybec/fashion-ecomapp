@@ -39,6 +39,9 @@
             <div class="label">Confirm password</div>
             <input type="password" class="form-control" name="confirmpassword" id="confirm-password" placeholder="Confirm Password"   required autocomplete="new-password">
             <div id="error5" class="error-message"></div>
+            <% if (message) { %>
+              <div class="alert alert-danger text-center"><%= message %></div>
+            <% } %>
           </label>
           <div class="submit">
             <button type="submit" class="submit__btn">Sign Up</button>

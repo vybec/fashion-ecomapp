@@ -2,6 +2,7 @@ const User = require('../../Models/userSchema');
 const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
 const bcrypt = require('bcrypt');
+const { response } = require('express');
 
 
 
@@ -34,11 +35,13 @@ function generateOtp() {
 async function sendVerificationEmail(email, otp) {
     try {
         const transporter = nodemailer.createTransport({
+
             service: 'gmail',
             port: 587,
             secure: false,
             requireTLS: true,
             auth: {
+
                 user: process.env.NODEMAILER_EMAIL,
                 pass: process.env.NODEMAILER_PASSWORD
             }
@@ -62,7 +65,9 @@ const signup = async (req, res) => {
     try {
         const { name, phone, email, password, confirmpassword } = req.body;
         if (password !== confirmpassword) {
+
             return res.render('signup', { message: 'Passwords do not match' });
+            
         }
 
         const findUser = await User.findOne({ email });
@@ -103,27 +108,30 @@ const loadShopping = async (req, res) => {
 
 const loadLogin = async (req, res) => {
     try {
-
-        if(!req.session.user){
-            return res.render('login')
-        }else{
-            res.redirect('/')
+        if (!req.session.user) {
+            return res.render('login', { user: null, message: req.query.message || null });
+        } else {
+            res.redirect('/');
         }
     } catch (error) {
-
-        res.render('/pageNotFound')
-
+        res.render('pageNotFound');
     }
-}
+};
+
 
 const loadHomepage = async (req, res) => {
     try {
-        return res.render('home');
+        const userId = req.session.user;
+        let user = null;
+        if (userId) {
+            user = await User.findById(userId);
+        }
+        res.render('home', { user });
     } catch (error) {
-        console.log('HOME IS NOT LOADING', error);
+        console.log('Error loading homepage:', error);
         res.status(500).send('Server Error');
     }
-}
+};
 
 const securePassword = async (password) => {
     try {
@@ -144,10 +152,12 @@ const verifyOtp = async (req, res) => {
             const user = req.session.userData;
             const passwordHash = await securePassword(user.password);
             const saveUserData = new User({
+
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
                 password: passwordHash
+
             });
             await saveUserData.save();
             req.session.user = saveUserData._id;
@@ -193,39 +203,30 @@ const resend = async(req,res)=>{
     }
 }
 
-const login =async (req,res)=>{
+const login = async (req, res) => {
     try {
-        const {email,password} =req.body;
-        const findUser =await User.findOne({isAdmin:0,email:email});
+        const { email, password } = req.body;
+        const findUser = await User.findOne({ isAdmin: 0, email: email });
 
-        if(!findUser){
-            return res.render('login',{message:'User not found'})
-
+        if (!findUser) {
+            return res.render('login', { user: null, message: 'User not found' });
         }
-        if(findUser.isBlocked){
-            return res.render('login',{message:'User is Blocked by admin'})
+        if (findUser.isBlocked) {
+            return res.render('login', { user: null, message: 'User is Blocked by admin' });
         }
 
-        const passwordMatch =await bcrypt.compare(password,findUser.password);
+        const passwordMatch = await bcrypt.compare(password, findUser.password);
 
-        if(!passwordMatch){
-            return res.render('login',{message:'Incorrect Password'})
-
+        if (!passwordMatch) {
+            return res.render('login', { user: null, message: 'Incorrect Password' });
         }
 
         req.session.user = findUser._id;
-
-
-
         res.redirect('/');
-
     } catch (error) {
-
-        console.error('login error',error);
-        res.render('login',{message:'login failed'})
-        
+        console.error('Login error:', error);
+        res.render('login', { user: null, message: 'Login failed' });
     }
-}
-
+};
 
 module.exports = { loadHomepage, loadSignup, loadShopping, loadLogin, signup, verifyOtp,resend,pageNotFound,login}
