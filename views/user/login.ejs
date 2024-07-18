@@ -21,10 +21,14 @@
           <label>
             <div class="label">Email address</div>
             <input type="email" name="email" placeholder="Enter Email" required>
+            
           </label>
           <label>
             <div class="label">Password</div>
             <input type="password" name="password" placeholder="Enter Password" required>
+            <% if (message) { %>
+              <div class="alert alert-danger text-center"><%= message %></div>
+            <% } %>
           </label>
           <div class="submit">
             <button type="submit" class="submit__btn">Login</button>

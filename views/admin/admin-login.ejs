@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(https://images4.alphacoders.com/236/236764.jpg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: gray;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            height: 300px;
+            text-align: center;
+        }
+        .login-container h1 {
+            margin-bottom: 1rem;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .input-group input {
+            width: 70%;
+            padding: 0.5rem;
+            padding-left: 2.5rem;
+            border: 1px solid #706b6b;
+            border-radius: 5px;
+        }
+        .input-group .icon {
+            position: absolute;
+            left: 20px;
+            top: 40%;
+            transform: translateY(-50%);
+        }
+        .input-group .toggle-password {
+            position: absolute;
+            left: 20px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
+        .login-button {
+            background-color: #00050a;
+            color: rgb(253, 253, 253);
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+        <form action="/admin/login" method="POST">
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Email Address" required>
+                <span class="icon">&#128100;</span>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Password" id="password" required>
+                <span class="toggle-password" onclick="togglePassword()">&#128065;</span>
+            </div>
+           
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            var toggleIcon = document.querySelector(".toggle-password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.textContent = "🙈";
+            } else {
+                passwordField.type = "password";
+                toggleIcon.textContent = "&#128065;";
+            }
+        }
+    </script>
+</body>
+</html>

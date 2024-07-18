@@ -229,4 +229,23 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { loadHomepage, loadSignup, loadShopping, loadLogin, signup, verifyOtp,resend,pageNotFound,login}
+const logout =async (req,res)=>{
+    try {
+
+        req.session.destroy((err)=>{
+            if(err){
+                console.log('Session destruction error',err.message);
+                return res.redirect('/pageNotFound');
+            }
+            return res.redirect('/login')
+        })
+        
+    } catch (error) {
+
+        console.log('logout error',error);
+        res.redirect('/pageNotFound')
+        
+    }
+}
+
+module.exports = { loadHomepage, loadSignup, loadShopping, loadLogin, signup, verifyOtp,resend,pageNotFound,login,logout}

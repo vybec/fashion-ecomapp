@@ -6,6 +6,7 @@ const session = require('express-session');
 const passport = require('./config/passport'); // Ensure the typo is fixed in this file
 const connectDB = require('./config/db'); // Ensure this path is correct based on your project structure
 const userRouter = require('./routes/userRouter');
+const adminRouter=require('./routes/adminRouter');
 
 const app = express();
 
@@ -35,6 +36,10 @@ app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
 });
+
+//To create admin login
+app.use('/admin',adminRouter);
+
 
 
 
