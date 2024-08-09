@@ -15,5 +15,7 @@ router.get('/',adminAuth,adminControlller.loadDashboard);
 
 router.get('/logout',adminControlller.logout);//logout setted
 router.get('/user',adminAuth,customerController.customerInfo);//customer management
+router.get('/blockCustomer',adminAuth,customerController.customerBlocked);
+router.get('/unblockCustomer',adminAuth,customerController.customerunBlocked);
 
 module.exports =router;
