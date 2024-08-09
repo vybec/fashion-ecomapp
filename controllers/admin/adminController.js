@@ -46,4 +46,22 @@ const loadDashboard = async (req, res) => {
     }
 };
 
-module.exports = { loadLogin, login, loadDashboard, pageerror };
+const logout = async(req,res)=>{
+    try {
+        req.session.destroy(err =>{
+            if(err){
+                console.log('Error destoryed session',err);
+                return res.redirect('/pageerror')
+                
+            }
+            res.redirect('/admin/login')
+        })
+    } catch (error) {
+
+        console.log(('unexpected error ',error));
+        res.redirect('/pageerror')
+        
+    }
+};
+
+module.exports = { loadLogin, login, loadDashboard, pageerror , logout,};
