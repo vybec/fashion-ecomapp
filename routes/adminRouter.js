@@ -21,7 +21,9 @@ router.get('/user',adminAuth,customerController.customerInfo);//customer managem
 router.get('/blockCustomer',adminAuth,customerController.customerBlocked);
 router.get('/unblockCustomer',adminAuth,customerController.customerunBlocked);
 
-router.get('/category',adminAuth,categoryController.categoryInfo);
+router.get('/category',adminAuth,categoryController.categoryInfo);//category mangement
 router.post('/addCategory',adminAuth,categoryController.addCategory);
+router.post('/addCategoryOffer',adminAuth,categoryController.addCategoryOffer);
+router.post('/removeCategoryOffer',adminAuth,categoryController.removeCategoryOffer);
 
 module.exports =router;

@@ -115,14 +115,23 @@
                                         <td></td>
                                         <td class="text-start"><%= category.name %></td>
                                         <td class="text-start"><%= category.description %></td>
-                                        <td></td>
+                                        <td>
+                                            <% if(category.categoryOffer) { %>
+                                                <%= category.categoryOffer %>
+                                            <% } else { %>
+                                                0%
+                                            <% } %>
+                                        </td>
                                         <td class="text-start">
+                                            <% if(category.categoryOffer === 0) { %>
                                             <button class="btn btn-info" style="width: 100px">
-                                                <a href="#" class="text-white">Add Offer</a>
+                                                <a href="#" class="text-white" onclick="addOffer('<%= category._id %>')">Add Offer</a>
                                             </button>
+                                            <% } else { %>
                                             <button class="btn btn-info" style="width: 100px">
-                                                <a href="#" class="text-white">Remove</a>
+                                                <a href="#" class="text-white" onclick="removeOffer('<%= category._id %>')">Remove</a>
                                             </button>
+                                            <% } %>
                                         </td>
                                         <td class="text-start">
                                             <span class="badge rounded-pill alert-success" style="width: 60px">Listed</span>
@@ -239,11 +248,72 @@
 
         function clearErrorMessages() {
             const errorElements = document.getElementsByClassName('error-message');
-            Array.from(errorElements).forEach((element) => {
+            Array.from(errorElements).forEach(function(element) {
                 element.innerText = '';
                 element.style.display = 'none';
             });
         }
+
+        function addOffer(categoryId) {
+            Swal.fire({
+                title: 'Enter offer percentage',
+                input: 'text',
+                inputPlaceholder: 'Enter offer percentage',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: (offerPercentage) => {
+                    if (offerPercentage === '' || isNaN(offerPercentage) || offerPercentage <= 0 || offerPercentage >= 100) {
+                        Swal.showValidationMessage('Please enter a valid offer percentage between 1 and 99.');
+                        return false;
+                    }
+                    return offerPercentage;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const offerPercentage = result.value;
+                    fetch(`/admin/addCategoryOffer/${categoryId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ offerPercentage })
+                    }).then((response) => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            throw new Error('Failed to add offer');
+                        }
+                    }).catch((error) => {
+                        Swal.fire('Error', 'Failed to add offer', 'error');
+                    });
+                }
+            });
+        }
+
+        function removeOffer(categoryId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action will remove the offer from this category.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/removeCategoryOffer/${categoryId}`, {
+                        method: 'POST'
+                    }).then((response) => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            throw new Error('Failed to remove offer');
+                        }
+                    }).catch((error) => {
+                        Swal.fire('Error', 'Failed to remove offer', 'error');
+                    });
+                }
+            });
+        }
     </script>
-    <%- include("../../views/partials/admin/footer") %>
 </body>
+<%- include("../../views/partials/admin/footer") %>

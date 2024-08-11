@@ -51,7 +51,7 @@ const productSchema =new Schema({
     },
     createdOn:{
         type:Date,
-        default:Date,now
+        default:Date.now
 
     }
 
