@@ -1,6 +1,13 @@
 <%- include("../../views/partials/admin/header") %>
 
 <div class="content-header row">
+    <!--<div class="d-flex justify-content-end">
+        <button id="darkModeToggle" class="btn btn-secondary" style="border: none; background: transparent; padding: 0;">
+            <img class="img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWOhAo76JhpxhoAyRaHW0EuIeOdkEpe-PaAw&s" alt="Dark Mode Icon">
+        </button>
+    </div>-->
+    
+    
     <div class="d-flex justify-content-between align-items-center">
         <h2 class="content-title card-title">Customers</h2>
     </div>
@@ -61,5 +68,30 @@
         </ul>
     </nav>
 </div>
+
+<!--<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('darkModeToggle');
+        const body = document.body;
+    
+        // Check if the user has a preferred theme
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+        }
+    
+        toggleButton.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            
+            // Save the user's preference
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    });
+    </script>-->
+    
+    
 
 <%- include("../../views/partials/admin/footer") %>

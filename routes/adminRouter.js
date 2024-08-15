@@ -9,6 +9,11 @@ const customerController =require('../controllers/admin/customerController');
 
 const categoryController =require('../controllers/admin/categoryController');
 
+const multer =require('multer');
+const storage=require('../helpers/multer');
+const uploads=multer({storage:storage});
+const brandController=require('../controllers/admin/brandController');
+
 
 router.get('/pageerror',adminControlller.pageerror);
 router.get('/login',adminControlller.loadLogin);
@@ -29,5 +34,7 @@ router.get('/listCategory',adminAuth,categoryController.getListCategory);
 router.get('/unlistCategory',adminAuth,categoryController.getUnlistCategory);
 router.get('/editCategory',adminAuth,categoryController.getEditCategory);
 router.post('/editCategory/:id',adminAuth,categoryController.editCategory);
+
+router.get('/brands',adminAuth,brandController.getBrandPage);
 
 module.exports =router;
