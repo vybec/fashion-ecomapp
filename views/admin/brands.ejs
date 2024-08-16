@@ -35,7 +35,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    <form method="post" action="" enctype="">
+                    <form method="post" action="/admin/addBrand" enctype="multipart/form-data">
                         <div class="mb-4">
                             <label for="brand_name" class="form-label">Brand Name</label>
                             <input
@@ -43,13 +43,17 @@
                                 name="name"
                                 placeholder="Type here"
                                 class="form-control"
+                                required
                             />
                         </div>
                         <label for="brand_image" class="form-label">Brand Image</label>
                         <div class="input-upload">
                             <img src="" alt=""/>
-                            <input class="form-control border" name="image" type="file" />
+                            <input class="form-control border" name="image" type="file" required/>
                         </div>
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="error-message"><%= error %></div>
+                        <% } %>
                         <div class="d-grid">
                             <button class="btn btn-primary mt-20" type="submit">
                                 Add Brand
@@ -70,8 +74,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <% data.reverse().forEach((brand, index) => { %>
                                 <tr>
-                                    <td class="text-start"></td>
+                                    <td class="text-start"><%= brand.brandName %></td>
                                     <td class="text-start">
                                         <div
                                             class="d-flex align-items-center justify-content-center"
@@ -83,39 +88,33 @@
                                             "
                                         >
                                             <img
-                                                src=""
-                                                alt=""
+                                                src="/uploads/re-image/<%= brand.brandImage[0] %>"
+                                                alt="<%= brand.brandName %>"
                                                 class="img-fluid rounded-circle"
                                                 style="width: 100%; height: auto"
                                             />
                                         </div>
                                     </td>
                                     <td class="text-start">
-                                        <span
-                                            class="badge rounded-pill alert-danger"
-                                            style="width: 60px"
-                                        >Blocked</span>
-                                        <span
-                                            class="badge rounded-pill alert-success"
-                                            style="width: 60px"
-                                        >Active</span>
+                                        <% if (brand.status === 'Blocked') { %>
+                                            <span class="badge rounded-pill alert-danger" style="width: 60px">Blocked</span>
+                                        <% } else { %>
+                                            <span class="badge rounded-pill alert-success" style="width: 60px">Active</span>
+                                        <% } %>
                                     </td>
                                     <td class="text-start">
                                         <button class="btn btn-danger" style="width: 90px">
-                                            <a href="" class="text-white">Block</a>
+                                            <a href="/admin/blockBrand/<%= brand._id %>" class="text-white">Block</a>
                                         </button>
                                         <button class="btn btn-success" style="width: 90px">
-                                            <a href="" class="text-white">Unblock</a>
+                                            <a href="/admin/unblockBrand/<%= brand._id %>" class="text-white">Unblock</a>
                                         </button>
-                                        <button
-                                            class="btn btn-danger"
-                                            style="width: 90px"
-                                            onclick=""
-                                        >
-                                            <a href="" class="text-white">Delete</a>
+                                        <button class="btn btn-danger" style="width: 90px">
+                                            <a href="/admin/deleteBrand/<%= brand._id %>" class="text-white">Delete</a>
                                         </button>
                                     </td>
                                 </tr>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>

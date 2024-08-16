@@ -26,7 +26,7 @@ router.get('/user',adminAuth,customerController.customerInfo);//customer managem
 router.get('/blockCustomer',adminAuth,customerController.customerBlocked);
 router.get('/unblockCustomer',adminAuth,customerController.customerunBlocked);
 
-router.get('/category',adminAuth,categoryController.categoryInfo);//category mangement
+router.get('/category',adminAuth,categoryController.categoryInfo);//category management
 router.post('/addCategory',adminAuth,categoryController.addCategory);
 router.post('/addCategoryOffer',adminAuth,categoryController.addCategoryOffer);
 router.post('/removeCategoryOffer',adminAuth,categoryController.removeCategoryOffer);
@@ -35,6 +35,8 @@ router.get('/unlistCategory',adminAuth,categoryController.getUnlistCategory);
 router.get('/editCategory',adminAuth,categoryController.getEditCategory);
 router.post('/editCategory/:id',adminAuth,categoryController.editCategory);
 
-router.get('/brands',adminAuth,brandController.getBrandPage);
+router.get('/brands',adminAuth,brandController.getBrandPage);//brand management
+
+router.post('/addBrands',adminAuth,uploads.single('image'),brandController.addBrand);
 
 module.exports =router;

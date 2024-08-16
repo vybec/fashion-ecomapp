@@ -29,5 +29,26 @@ const getBrandPage = async (req, res) => {
         res.redirect('/pageerror');
     }
 }
+const addBrand=async (req,res)=>{
+    try {
+        const brand =req.body.name;
+        const findBrand=await Brand.findOne({brand});
+        if(!findBrand){
+            const image =req.file.filename;
+            const newBrand =new Brand({
+                brandName:brand,
+                brandImage:image,
 
-module.exports = { getBrandPage };
+            })
+            await newBrand.save();
+            res.redirect('/admin/brands');
+        }
+    } catch (error) {
+       
+
+        res.redirect('/pageerror')
+        
+    }
+}
+
+module.exports = { getBrandPage ,addBrand,};
