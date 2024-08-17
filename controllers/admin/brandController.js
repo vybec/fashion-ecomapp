@@ -50,5 +50,38 @@ const addBrand=async (req,res)=>{
         
     }
 }
+const blockBrand = async (req, res) => {
+    try {
+        const id = req.params.id; // Get the ID from params
+        await Brand.updateOne({ _id: id }, { $set: { isBlocked: true } });
+        res.redirect('/admin/brands');
+    } catch (error) {
+        res.redirect('/pageerror');
+    }
+};
 
-module.exports = { getBrandPage ,addBrand,};
+const unBlockBrand = async (req, res) => {
+    try {
+        const id = req.params.id; // Get the ID from params
+        await Brand.updateOne({ _id: id }, { $set: { isBlocked: false } });
+        res.redirect('/admin/brands');
+    } catch (error) {
+        res.redirect('/pageerror');
+    }
+};
+
+const deleteBrand = async (req, res) => {
+    try {
+        const id = req.params.id; // Get the ID from params
+        if (!id) {
+            return res.status(400).redirect('/pageerror');
+        }
+        await Brand.deleteOne({ _id: id });
+        res.redirect('/admin/brands');
+    } catch (error) {
+        console.error('Error deleting brand:', error);
+        res.status(500).redirect('/pageerror');
+    }
+};
+
+module.exports = { getBrandPage ,addBrand,blockBrand,unBlockBrand,deleteBrand};
