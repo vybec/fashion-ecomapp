@@ -14,6 +14,8 @@ const storage=require('../helpers/multer');
 const uploads=multer({storage:storage});
 const brandController=require('../controllers/admin/brandController');
 
+const productController=require('../controllers/admin/productConroller');
+
 
 router.get('/pageerror',adminControlller.pageerror);
 router.get('/login',adminControlller.loadLogin);
@@ -36,10 +38,11 @@ router.get('/editCategory',adminAuth,categoryController.getEditCategory);
 router.post('/editCategory/:id',adminAuth,categoryController.editCategory);
 
 router.get('/brands',adminAuth,brandController.getBrandPage);//brand management
-
 router.post('/addBrand/',adminAuth,uploads.single('image'),brandController.addBrand);
 router.get('/blockBrand/:id',adminAuth,brandController.blockBrand);
 router.get('/unBlockBrand/:id',adminAuth,brandController.unBlockBrand);
 router.get('/deleteBrand/:id',adminAuth,brandController.deleteBrand);
+
+router.get('/addProducts',adminAuth,productController.getProductAddPage);//product managment
 
 module.exports =router;

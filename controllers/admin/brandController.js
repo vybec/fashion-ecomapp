@@ -2,6 +2,7 @@ const Brand = require('../../Models/brandSchema');
 const Product = require('../../Models/productSchema');
 
 const getBrandPage = async (req, res) => {
+    
     try {
         const page = parseInt(req.query.page) || 1;  // Correctly parse the page number from the query
         const limit = 4;
