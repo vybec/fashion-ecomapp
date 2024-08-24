@@ -45,5 +45,10 @@ router.get('/deleteBrand/:id',adminAuth,brandController.deleteBrand);
 
 router.get('/addProducts',adminAuth,productController.getProductAddPage);//product managment
 router.post('/addProducts',adminAuth,uploads.array('images',4),productController.addProducts);
+router.get('/products',adminAuth,productController.getAllProducts);
 
 module.exports =router;
+
+
+
+////arrange the code shift+Alt+f
