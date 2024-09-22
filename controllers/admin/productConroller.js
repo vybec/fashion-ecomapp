@@ -197,4 +197,87 @@ const unblockProduct=async(req,res)=>{
     }
 }
 
-module.exports={getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct,}
+const getEditProduct =async(req,res)=>{
+    try {
+        const id =req.query.id;
+        const product = await Product.findOne({_id:id});
+        const category = await Category.find({});
+        const brand = await Brand.find({});
+        res.render('edit-product',{
+            product:product,
+            cat:category,
+            brand:brand,
+
+        })
+    } catch (error) {
+
+        res.redirect('/pageerror')
+        
+    }
+}
+
+const editProduct = async (req,res)=>{
+    try {
+        const id=req.paramas.id;
+        const product = await Product.findOne({_id:id});
+        const data= req.body;
+        const existingProduct = await Product.findOne({
+            productName:data.productName,
+            _id:{$ne:id}
+
+        })
+        if(existingProduct){
+            return res.status(400).json({error:'Product with this name already exists'})
+        }
+        const images =[];
+
+        if(req.files && req.files.length>0){
+            for(let i=0;i<req.files.length;i++){
+                images.push(req.files[i].filename);
+            }
+        }
+
+        const updateFields ={
+            productName:data.productName,
+            description:data.description,
+            brand:data.brand,
+            category:product.category,
+            regularPrice:data.regularPrice,
+            salePrice:data.salePrice,
+            quantity:data.quantity,
+            size:data.size,
+            color:data.color
+        }
+        if(req.files.length>0){
+            updateFields.$push = {productImage:{search:images}};
+
+        }
+
+        await Product.findByIdAndUpdate(id,updateFields,{new:true});
+
+        res.redirect('/admin/products');
+
+    } catch (error) {
+        
+    }
+}
+
+const deleteSingleImage =async(req,res)=>{
+    try {
+        const {imageNameToServer,productIdToServer} = req.body;
+        const product = await Product.findByIdAndUpdate(productIdToServer,{$pull:{productImage:imageNameToServer}})
+        const imagePath = path.join('public','uploads','re-image',imageNameToServer);
+        if(fs.existsSync(imagePath)){
+            await fs.unlinkSync(imagePath);
+            console.log('Image ${imageNameToServer} deleted successfully');
+        }else{
+            console.log('Image ${imageNameToServer} Not Found');
+        }
+    } catch (error) {
+
+        res.redirect('/pageerror')
+        
+    }
+}
+
+module.exports={getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct,getEditProduct,editProduct,deleteSingleImage}

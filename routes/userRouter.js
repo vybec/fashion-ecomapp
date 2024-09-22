@@ -3,6 +3,7 @@ const router = express.Router();
 const userController =require('../controllers/user/userController');
 const passport = require('../config/passport');
 
+const profileController=require('../controllers/user/profileController');
 
 
 router.get('/pageNotFound',userController.pageNotFound);
@@ -21,5 +22,10 @@ router.get('/auth/google/callback',passport.authenticate('google',{failureRedire
     res.redirect('/')
 });
 router.get('/logout',userController.logout);
+
+//profile-managment
+
+router.get('/forgot-password',profileController.getFrogotPassPage);
+router.post('forgot-email-valid',profileController.forgotEmailValid);
 
 module.exports =router;

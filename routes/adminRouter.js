@@ -17,6 +17,8 @@ const brandController=require('../controllers/admin/brandController');
 const productController=require('../controllers/admin/productConroller');
 
 
+
+
 router.get('/pageerror',adminControlller.pageerror);
 router.get('/login',adminControlller.loadLogin);
 router.post('/login',adminControlller.login);//post reqquest for login
@@ -50,6 +52,13 @@ router.post('/addProductOffer',adminAuth,productController.addProductOffer);
 router.post('/removeProductOffer',adminAuth,productController.removeProductOffer);
 router.get('/blockProduct',adminAuth,productController.blockProduct);
 router.get('/unblockProduct',adminAuth,productController.unblockProduct);
+router.get('/editProduct',adminAuth,productController.getEditProduct);
+router.get('/editProduct/:id',adminAuth,uploads.array('images',4),productController.editProduct);
+router.get('/deletImage',adminAuth,productController.deleteSingleImage);
+
+
+
+
 
 
 module.exports =router;

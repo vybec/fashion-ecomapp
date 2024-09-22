@@ -70,6 +70,7 @@ input {
 }
 
 .submit__btn {
+  
   padding: 10px 20px;
   background-color: #355C7D;
   color: #fff;
@@ -78,8 +79,22 @@ input {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s;
+
 }
+
 
 .submit__btn:hover {
   background-color: #E84A5F;
 }
+.forget-password-link{
+  font-size: 0.875rem;
+  color: blue;
+  text-decoration: none;
+
+}
+.forget-password-link:hover{
+  color: #0056b3 ;
+  text-decoration: underline;
+
+}
+
