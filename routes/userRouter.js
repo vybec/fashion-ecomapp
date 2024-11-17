@@ -26,6 +26,7 @@ router.get('/logout',userController.logout);
 //profile-managment
 
 router.get('/forgot-password',profileController.getFrogotPassPage);
-router.post('forgot-email-valid',profileController.forgotEmailValid);
+router.post('/forgot-email-valid',profileController.forgotEmailValid);
+router.post('/forget-email-valid', profileController.forgotEmailValid);
 
 module.exports =router;
